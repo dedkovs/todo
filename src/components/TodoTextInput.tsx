@@ -1,33 +1,33 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '../models/Root';
+import { Input } from '../styles/Input';
 
-interface Props {}
+interface Props {
+	text: string;
+	setText: React.Dispatch<React.SetStateAction<string>>;
+}
 
-const TodoTextInput: React.FC<Props> = observer(() => {
-	const { rootState } = useMst();
-	const [state, setState] = React.useState({ text: '' });
+const TodoTextInput: React.FC<Props> = observer(({ text, setText }: Props) => {
+	const { addTodo } = useMst();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ text: e.target.value });
+		setText(e.target.value);
 	};
 
 	const handleSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		// const text = e.target.value.trim();
 		if (e.key === 'Enter') {
-			rootState.addTodo(state.text);
-			// if (newTodo) {
-			setState({ text: '' });
-			// }
+			addTodo(text);
+			setText('');
 		}
 	};
 
 	return (
-		<input
+		<Input
 			type="text"
 			placeholder="What needs to be done?"
 			autoFocus={true}
-			value={state.text}
+			value={text}
 			onChange={handleChange}
 			onKeyDown={handleSubmit}
 		/>

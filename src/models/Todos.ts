@@ -7,10 +7,6 @@ export const Todo = types
 		done: types.boolean,
 	})
 	.actions((self) => ({
-		setTitle(title: string) {
-			self.title = title;
-		},
-
 		toggle() {
 			self.done = !self.done;
 		},
@@ -21,9 +17,7 @@ export const Todos = types
 		todos: types.optional(types.array(Todo), []),
 	})
 	.actions((self) => ({
-		// addTodo(todo: SnapshotIn<typeof Todo> | Instance<typeof Todo>) {
 		addTodo(title: string) {
-			// self.todos.push(todo);
 			const id =
 				self.todos.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1;
 			self.todos.push({

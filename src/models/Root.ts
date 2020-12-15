@@ -1,35 +1,27 @@
 import { useContext, createContext } from 'react';
-import { types, Instance, onSnapshot } from 'mobx-state-tree';
-
+import { Instance, onSnapshot } from 'mobx-state-tree';
 import { Todos } from './Todos';
 
-const RootModel = types.model({
-	rootState: Todos,
-});
-
-let initialState = RootModel.create({
-	rootState: {},
-});
+let initialState = Todos.create();
 
 const data = localStorage.getItem('rootState');
 if (data) {
 	const json = JSON.parse(data);
-	if (RootModel.is(json)) {
-		initialState = RootModel.create(json);
+	if (Todos.is(json)) {
+		initialState = Todos.create(json);
 	}
 }
 
 export const rootStore = initialState;
 
 onSnapshot(rootStore, (snapshot) => {
-	console.log('Snapshot: ', snapshot);
 	localStorage.setItem('rootState', JSON.stringify(snapshot));
 });
 
-export type RootInstance = Instance<typeof RootModel>;
+export type RootInstance = Instance<typeof Todos>;
 const RootStoreContext = createContext<null | RootInstance>(null);
-
 export const Provider = RootStoreContext.Provider;
+
 export function useMst() {
 	const store = useContext(RootStoreContext);
 	if (store === null) {
