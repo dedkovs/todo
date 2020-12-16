@@ -15,7 +15,8 @@ export const StyledCheckbox = checkbox`
 	height: 25px;
 	background: ${(props) => (props.checked ? '#88b8ff' : 'white')};
 	
-	border: ${(props) => (props.checked ? 'none' : '1px solid grey')};
+	border: ${(props) =>
+		props.checked ? '1px solid transparent' : '1px solid grey'};
 	border-radius: 5px;
 	transition: all 150ms;
 
